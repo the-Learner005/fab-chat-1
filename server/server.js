@@ -23,12 +23,14 @@ io.on('connection',function (socket) {
     //     createdAt: new Date().toString()
     //
     // });
-    socket.emit('newMessage',{
-        From: 'Asma',
-        time: new Date().toString()
-    });
-    socket.on('createMessage',function(){
-        console.log("New Message is sent after creating");
+
+    socket.on('createMessage',function(message){
+        //is msg ko sbko send krdena hai
+        io.emit('newMessage',{
+            from: message.from,
+            text: message.text,
+            date: new Date().getTime()
+        });
     });
 });
 

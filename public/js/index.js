@@ -16,7 +16,3 @@ socket.on('disconnect',function(){
 //     console.log('New Email Arrived',  email);
 // });
 //From CLient to server
-socket.emit('createMessage',{
-    from:'Ayesha',
-    text: 'Hello I am ayesha ! Whats going on ?'
-});
