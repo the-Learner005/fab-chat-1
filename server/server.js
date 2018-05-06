@@ -1,17 +1,37 @@
-const path = require('path'); //this dont need to be installed
+const http = require('http');
 const express = require('express');
-const port = process.env.PORT || 3000;
+const path = require('path');
+const socketIO= require('socket.io');
+
 var app = express();
-const publicPath = path.join(__dirname , '../public');
-//set up express static middleware that will serve up our public folder
+var server = http.createServer(app);
+var io= socketIO(server);
+var publicPath = path.join(__dirname , '../public');
+var PORT = process.env.PORT || 3000;
+
 app.use(express.static(publicPath));
 
-// console.log(publicPath);
-app.get('/',function(req,res){
-    res.send('Hello Web Visitor');
+io.on('connection',function (socket) {
+    console.log("User Connected");
+    //____________________//
+    socket.on('disconnect',function(){
+        console.log("User Disconnected");
+    });
+    // socket.emit('newEmail',{
+    //     from:'Ayesha',
+    //     to:'Asma',
+    //     createdAt: new Date().toString()
+    //
+    // });
+    socket.emit('newMessage',{
+        From: 'Asma',
+        time: new Date().toString()
+    });
+    socket.on('createMessage',function(){
+        console.log("New Message is sent after creating");
+    });
 });
 
-app.listen(port,function(){
-    //anything here
-    console.log('Server is Up on '+ port);
+server.listen(PORT,function(){
+    console.log("Server is ready on port " +  PORT);
 });
